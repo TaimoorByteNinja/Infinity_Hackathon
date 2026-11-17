@@ -154,6 +154,26 @@ Password for every account: **`Demo123!`**
 
 ## Deployment
 
+### Vercel (used for the live demo)
+
+[`vercel.json`](vercel.json) deploys the frontend as static files (`frontend/dist`) and the whole Express API as one serverless function ([`api/index.js`](api/index.js)) on the same domain. The function region is Tokyo (`hnd1`), next to the Supabase database.
+
+1. In Vercel: **Add New → Project**, import this GitHub repository, and keep the defaults (`vercel.json` already sets the build).
+2. Add these **Environment Variables**:
+
+| Name | Value |
+|---|---|
+| `DATABASE_URL` | Supabase **transaction pooler** (port **6543**): `postgresql://postgres.<REF>:<ENCODED-PASSWORD>@aws-0-<REGION>.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1&sslmode=require` |
+| `AI_PROVIDER` | `groq` |
+| `AI_API_KEY` | your Groq key |
+| `AI_MODEL` | `openai/gpt-oss-120b` |
+| `AI_FALLBACK_MODELS` | `openai/gpt-oss-20b` |
+| `SESSION_SECRET` | a long random string |
+
+3. Click **Deploy**. The database is already migrated and seeded (`npm run setup` against Supabase), so Vercel has nothing extra to run.
+
+### Render (alternative: one long-running service)
+
 The app runs as **one long-lived Node service** (API + frontend on one port), so it deploys to any Node host. The included [`render.yaml`](render.yaml) handles Render:
 
 1. Create a hosted PostgreSQL database (Neon, Supabase or Aiven) and copy its connection string.

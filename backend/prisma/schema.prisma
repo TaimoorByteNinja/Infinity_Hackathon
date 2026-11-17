@@ -1,7 +1,9 @@
 // NovaWorks AI Project Manager — data model (User, Project, Task)
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  // "rhel-openssl-3.0.x" = Vercel serverless runtime (Amazon Linux 2023)
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
