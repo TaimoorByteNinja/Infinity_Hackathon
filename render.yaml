@@ -1,15 +1,21 @@
-# Render Blueprint — one web service on one port (API + frontend)
+# Render Blueprint — ONE web service on ONE port (API + frontend)
+# Dashboard: New > Blueprint > select this repository.
 services:
   - type: web
     name: novaworks-crm
     runtime: node
     plan: free
+    region: singapore          # closest Render region to the Supabase database (Tokyo)
     buildCommand: npm ci --include=dev && npm run build
     startCommand: npm run db:migrate && npm run db:seed && npm start
     healthCheckPath: /api/health
+    autoDeploy: true
     envVars:
+      - key: NODE_VERSION
+        value: "22"
       - key: NODE_ENV
         value: production
+      # Supabase SESSION pooler (port 5432) — Render runs a long-lived server, so session mode is right here
       - key: DATABASE_URL
         sync: false
       - key: AI_PROVIDER
