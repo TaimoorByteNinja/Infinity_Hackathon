@@ -1,0 +1,24 @@
+# Render Blueprint — one web service on one port (API + frontend)
+services:
+  - type: web
+    name: novaworks-crm
+    runtime: node
+    plan: free
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm run db:migrate && npm run db:seed && npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: AI_PROVIDER
+        value: groq
+      - key: AI_API_KEY
+        sync: false
+      - key: AI_MODEL
+        value: openai/gpt-oss-120b
+      - key: AI_FALLBACK_MODELS
+        value: openai/gpt-oss-20b
+      - key: SESSION_SECRET
+        generateValue: true
