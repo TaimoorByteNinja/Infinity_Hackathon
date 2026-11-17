@@ -28,6 +28,7 @@ A simple project-management CRM for NovaWorks Technologies. The administrator pa
 
 - Simple login/logout using the 10 seeded demo accounts (no signup, reset or verification).
 - **Admin:** all project cards, company stats, and **Create from Transcript**.
+- **Paste or upload** a transcript (`.txt`, `.md`, `.vtt`, `.srt`), or load the supplied one in one click.
 - **AI transcript conversion:**
   - Applies final decisions (revised dates, estimates and owners).
   - Ignores rejected features and assigns only people from the directory.
@@ -189,6 +190,7 @@ The app runs as **one long-lived Node service** (API + frontend on one port), so
 ## Known limitations
 
 - Editing saved projects or tasks is not implemented (it's optional). You can correct the AI draft before saving, and delete a project.
+- Transcript upload accepts text files only (`.txt`, `.md`, `.vtt`, `.srt`, `.csv`, `.log`); PDF/Word files must be pasted as text.
 - Free AI tiers are rate-limited. The app waits and retries for short limits, but many conversions in a row may need a minute's pause.
 - AI output can vary between runs. Strict schema output and validation catch structural errors. Wrong values the model gives with confidence are possible, and they show up in the review screens.
 - No cost calculation, progress monitoring or user management, all out of scope by design.

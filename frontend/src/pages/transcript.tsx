@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useRef, useState, type ChangeEvent } from "react"
 import { Link } from "react-router-dom"
-import { AlertCircleIcon, CheckCircle2Icon, FileTextIcon, RotateCcwIcon, SparklesIcon } from "lucide-react"
+import { AlertCircleIcon, CheckCircle2Icon, FileTextIcon, RotateCcwIcon, SparklesIcon, UploadIcon } from "lucide-react"
 import { toast } from "sonner"
 import { DraftEditor } from "@/features/transcript/draft-editor"
 import { PageHeader } from "@/components/page-header"
@@ -29,6 +29,25 @@ export function TranscriptPage() {
   const [draft, setDraft] = useState<Draft | null>(null)
   const [issues, setIssues] = useState<Issue[]>([])
   const users = useFetch(() => api.users())
+  const fileInput = useRef<HTMLInputElement>(null)
+
+  /** Load a plain-text transcript file (.txt, .md, .vtt, .srt, .csv, .log) into the editor. */
+  async function onFile(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    e.target.value = ""
+    if (!file) return
+    if (file.size > 200_000) {
+      toast.error("File is too large (max 200 KB of text).")
+      return
+    }
+    const text = (await file.text()).replace(/\r\n/g, "\n").trim()
+    if (!text || /[\u0000-\u0008]/.test(text.slice(0, 2000))) {
+      toast.error("This file doesn't contain readable text. Use a .txt, .md, .vtt or .srt transcript, or paste the text.")
+      return
+    }
+    setTranscript(text)
+    toast.success(`Loaded ${file.name}`)
+  }
 
   function handle(outcome: TranscriptOutcome) {
     if (outcome.status === "created") {
@@ -117,7 +136,7 @@ export function TranscriptPage() {
     <>
       <PageHeader
         title="Create from Transcript"
-        description="Paste a meeting description or transcript. AI identifies projects and tasks, assigns people from the team directory, and sets deadlines and estimated hours."
+        description="Paste or upload a meeting description or transcript. AI identifies projects and tasks, assigns people from the team directory, and sets deadlines and estimated hours."
       />
       {error && (
         <Alert variant="destructive" className="mb-6">
@@ -188,6 +207,16 @@ export function TranscriptPage() {
             <Button variant="outline" disabled={busy} onClick={() => setTranscript(SAMPLE_TRANSCRIPT)}>
               Load supplied meeting transcript
             </Button>
+            <Button variant="outline" disabled={busy} onClick={() => fileInput.current?.click()}>
+              <UploadIcon /> Upload file
+            </Button>
+            <input
+              ref={fileInput}
+              type="file"
+              accept=".txt,.md,.vtt,.srt,.csv,.log,text/plain,text/markdown"
+              className="hidden"
+              onChange={onFile}
+            />
             {transcript && (
               <Button variant="ghost" disabled={busy} onClick={() => setTranscript("")}>
                 Clear
