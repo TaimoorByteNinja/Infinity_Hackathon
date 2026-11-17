@@ -156,9 +156,9 @@ Password for every account: **`Demo123!`**
 
 ### Vercel (used for the live demo)
 
-[`vercel.json`](vercel.json) deploys the frontend as static files (`frontend/dist`) and the whole Express API as one serverless function ([`api/index.js`](api/index.js)) on the same domain. The function region is Tokyo (`hnd1`), next to the Supabase database.
+[`vercel.json`](vercel.json) uses **Vercel Services**: the `frontend` service (Vite, static) is served at `/`, and the `backend` service (Express, entry [`backend/vercel-entry.js`](backend/vercel-entry.js)) at `/api/*`, on one domain. Vercel detects this layout automatically and keeps the **Services** preset.
 
-1. In Vercel: **Add New → Project**, import this GitHub repository, and keep the defaults (`vercel.json` already sets the build).
+1. In Vercel: **Add New → Project**, import this GitHub repository, and keep the **Services** preset (`vercel.json` already configures both services).
 2. Add these **Environment Variables**:
 
 | Name | Value |
