@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { roleLabel } from "@/lib/api"
 import { useAuth } from "@/lib/auth"
 
@@ -52,6 +53,7 @@ export function AppShell() {
             <Avatar>
               <AvatarFallback>{initials}</AvatarFallback>
             </Avatar>
+            <ThemeToggle />
             <Button
               variant="ghost"
               size="icon"

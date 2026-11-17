@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { useAuth } from "@/lib/auth"
 
 const DEMO_ACCOUNTS = [
@@ -48,7 +49,10 @@ export function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-svh items-center justify-center bg-muted/40 p-4">
+    <div className="relative flex min-h-svh items-center justify-center bg-muted/40 p-4">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
       <div className="grid w-full max-w-4xl gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
