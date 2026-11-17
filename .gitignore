@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Environment — real keys and database passwords must never be committed
+.env
+.env.*
+!.env.example
+
+# Logs / OS / editor
+npm-debug.log*
+*.log
+.DS_Store
+.vscode/
+.idea/
+coverage/
